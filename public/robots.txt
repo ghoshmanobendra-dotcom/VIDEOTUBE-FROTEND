@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /settings
+Disallow: /upload
+Disallow: /history
+Disallow: /liked
+Disallow: /subscriptions
+
+# Change this to your exact Vercel URL
+Sitemap: https://YOUR-APP-URL.vercel.app/sitemap.xml
