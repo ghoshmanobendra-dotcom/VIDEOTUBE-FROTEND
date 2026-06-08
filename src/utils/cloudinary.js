@@ -56,11 +56,20 @@ export function avatarUrl(url) {
 }
 
 /**
- * Optimized thumbnail URL – max width 720px, WebP/AVIF, quality auto.
- * Suitable for video card thumbnails.
+ * Optimized thumbnail URL for below-the-fold video cards.
+ * w_648 matches the exact rendered card width (648px container from PageSpeed).
+ * q_60 gives ~50% size reduction vs q_auto with acceptable visual quality at card size.
  */
 export function thumbnailUrl(url) {
-  return optimizeCloudinaryUrl(url, 'w_720,f_auto,q_auto');
+  return optimizeCloudinaryUrl(url, 'w_648,h_365,c_fill,f_auto,q_60');
+}
+
+/**
+ * Optimized thumbnail URL for the LCP / first above-the-fold card.
+ * Uses q_auto (higher quality) since this is the most prominent visible image.
+ */
+export function lcpThumbnailUrl(url) {
+  return optimizeCloudinaryUrl(url, 'w_648,h_365,c_fill,f_auto,q_auto');
 }
 
 /**
