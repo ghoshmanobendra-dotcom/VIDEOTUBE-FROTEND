@@ -16,7 +16,12 @@ export const AuthProvider = ({ children }) => {
           setUser(response.data.data);
         }
       } catch (error) {
-        console.error("Not logged in");
+        // 401 = user is simply not logged in — this is expected, not an error.
+        // Only log genuinely unexpected errors (network failures, 5xx, etc.)
+        if (error.response?.status !== 401) {
+          console.warn('Auth check failed unexpectedly:', error.message);
+        }
+        // User stays null → treated as a guest
       } finally {
         setLoading(false);
       }
