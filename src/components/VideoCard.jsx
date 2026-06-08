@@ -3,14 +3,15 @@ import { MoreVertical, Flag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../api/axios';
-import { thumbnailUrl, avatarUrl } from '../utils/cloudinary';
+import { thumbnailUrl, avatarUrl, lcpThumbnailUrl } from '../utils/cloudinary';
 
-const VideoCard = ({ video }) => {
+const VideoCard = ({ video, priority = false }) => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const rawThumbnail = video.thumbnail || video.thumbnailUrl || "https://picsum.photos/600/340";
   const rawAvatar = video.owner?.avatar || video.channelAvatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=user";
-  const optimizedThumbnail = thumbnailUrl(rawThumbnail);
+  // Priority (LCP) card gets higher quality; all others get compressed q_60
+  const optimizedThumbnail = priority ? lcpThumbnailUrl(rawThumbnail) : thumbnailUrl(rawThumbnail);
   const optimizedAvatar = avatarUrl(rawAvatar);
   const channelName = video.owner?.fullname || video.channelName || "Unknown Channel";
   
@@ -58,10 +59,11 @@ const VideoCard = ({ video }) => {
           src={optimizedThumbnail} 
           alt={video.title} 
           className="thumbnail"
-          width="720"
-          height="405"
-          loading="lazy"
-          decoding="async"
+          width="648"
+          height="365"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchpriority={priority ? 'high' : 'auto'}
+          decoding={priority ? 'sync' : 'async'}
         />
         <span className="duration">{formattedDuration}</span>
       </div>
