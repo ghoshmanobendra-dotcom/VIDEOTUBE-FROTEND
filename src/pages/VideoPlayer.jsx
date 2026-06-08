@@ -4,6 +4,7 @@ import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { ThumbsUp, Share2, MessageSquare, Send, Trash2 } from 'lucide-react';
+import { avatarUrl } from '../utils/cloudinary';
 
 const VideoPlayer = () => {
   const { videoId } = useParams();
@@ -146,9 +147,13 @@ const VideoPlayer = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             <img 
                onClick={() => navigate(`/c/${videoData.owner?.username}`)}
-               src={videoData.owner?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=user"} 
+               src={avatarUrl(videoData.owner?.avatar) || "https://api.dicebear.com/7.x/avataaars/svg?seed=user"} 
                alt={videoData.owner?.fullname} 
                style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover', cursor: 'pointer' }}
+               width="50"
+               height="50"
+               loading="lazy"
+               decoding="async"
             />
             <div 
               onClick={() => navigate(`/c/${videoData.owner?.username}`)}
@@ -195,7 +200,15 @@ const VideoPlayer = () => {
             <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}><MessageSquare size={20}/> {comments.length} Comments</h3>
             
             <form onSubmit={handleComment} style={{ display: 'flex', gap: '15px', marginBottom: '30px' }}>
-                <img src={user?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=guest"} style={{ width: '40px', height: '40px', borderRadius: '50%' }} alt="You"/>
+                <img 
+                  src={avatarUrl(user?.avatar) || "https://api.dicebear.com/7.x/avataaars/svg?seed=guest"} 
+                  style={{ width: '40px', height: '40px', borderRadius: '50%' }} 
+                  alt="Your avatar"
+                  width="40"
+                  height="40"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div style={{ flex: 1, display: 'flex', borderBottom: '1px solid var(--border-color)' }}>
                     <input 
                        type="text" 
@@ -214,10 +227,14 @@ const VideoPlayer = () => {
                 {comments.map((comment) => (
                     <div key={comment._id} style={{ display: 'flex', gap: '15px' }}>
                          <img 
-                            src={comment.owner?.avatar} 
-                            alt={comment.owner?.fullname} 
+                            src={avatarUrl(comment.owner?.avatar)} 
+                            alt={comment.owner?.fullname || 'Commenter avatar'} 
                             onClick={() => comment.owner?.username && navigate(`/c/${comment.owner.username}`)}
                             style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', cursor: 'pointer' }}
+                            width="40"
+                            height="40"
+                            loading="lazy"
+                            decoding="async"
                          />
                          <div>
                              <p style={{ margin: '0 0 5px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>

@@ -5,6 +5,7 @@ import { LogOut, Settings as SettingsIcon, Users, UserPlus, Share2 } from 'lucid
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import VideoCard from '../components/VideoCard';
+import { largeAvatarUrl, thumbnailUrl as thumbUrl, ensureHttps } from '../utils/cloudinary';
 
 const ChannelVideoRow = ({ video, isOwner, onEdit, onDelete, onAnalyze }) => {
     const navigate = useNavigate();
@@ -18,7 +19,15 @@ const ChannelVideoRow = ({ video, isOwner, onEdit, onDelete, onAnalyze }) => {
 
     return (
        <div onClick={() => navigate(`/watch/${video._id}`)} style={{ display: 'flex', background: 'var(--bg-secondary)', borderRadius: '20px', overflow: 'hidden', padding: '15px', gap: '25px', cursor: 'pointer', border: '1px solid var(--border-color)', alignItems: 'center', transition: 'all 0.3s' }} onMouseOver={e => e.currentTarget.style.borderColor='rgba(162,122,255,0.4)'} onMouseOut={e => e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'}>
-           <img src={video.thumbnail || "https://picsum.photos/300/170"} style={{ width: '280px', height: '160px', objectFit: 'cover', borderRadius: '12px' }} />
+           <img 
+             src={thumbUrl(video.thumbnail) || "https://picsum.photos/300/170"} 
+             alt={video.title}
+             style={{ width: '280px', height: '160px', objectFit: 'cover', borderRadius: '12px' }} 
+             width="280"
+             height="160"
+             loading="lazy"
+             decoding="async"
+           />
            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                <h3 style={{ fontSize: '1.4rem', margin: '0 0 10px 0' }}>{video.title}</h3>
                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: '0 0 15px 0' }}>{video.description || "A breathtaking exploration of visual arts..."}</p>
@@ -195,7 +204,16 @@ const Channel = () => {
         }}
       >
         <div style={{ position: 'relative' }}>
-          <img src={channelData.avatar} alt={channelData.fullname} style={{ width: '160px', height: '160px', borderRadius: '50%', border: '4px solid #00e5ff', objectFit: 'cover' }} />
+          <img 
+            src={largeAvatarUrl(channelData.avatar)} 
+            alt={channelData.fullname} 
+            style={{ width: '160px', height: '160px', borderRadius: '50%', border: '4px solid #00e5ff', objectFit: 'cover' }}
+            width="160"
+            height="160"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
           <div style={{ position: 'absolute', bottom: '10px', right: '10px', background: '#00e5ff', color: 'black', borderRadius: '50%', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', border: '3px solid var(--bg-secondary)' }}>✓</div>
         </div>
         

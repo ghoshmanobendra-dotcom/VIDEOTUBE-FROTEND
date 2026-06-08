@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
+import { avatarUrl, ensureHttps } from '../utils/cloudinary';
 
 const Navbar = ({ setSidebarOpen, sidebarOpen }) => {
   const { user, logout } = useAuth();
@@ -60,6 +61,7 @@ const Navbar = ({ setSidebarOpen, sidebarOpen }) => {
           onClick={() => navigate(-1)}
           className="menu-btn"
           title="Go Back"
+          aria-label="Go back"
           style={{ marginRight: '10px' }}
         >
           <ArrowLeft size={24} />
@@ -69,6 +71,7 @@ const Navbar = ({ setSidebarOpen, sidebarOpen }) => {
           whileTap={{ scale: 0.9 }}
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="menu-btn"
+          aria-label="Toggle menu"
         >
           <Menu size={24} />
         </motion.button>
@@ -121,12 +124,28 @@ const Navbar = ({ setSidebarOpen, sidebarOpen }) => {
                     {notifications.length === 0 ? <div style={{textAlign: 'center', color: 'var(--text-secondary)', padding: '20px'}}>No notifications</div> :
                         notifications.map(notif => (
                             <div key={notif._id} onClick={() => handleNotificationClick(notif)} style={{ display: 'flex', gap: '10px', padding: '10px', borderRadius: '8px', cursor: 'pointer', background: notif.isRead ? 'transparent' : 'rgba(255,255,255,0.05)', marginBottom: '5px' }}>
-                                <img src={notif.sender?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=user"} style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} />
+                                <img 
+                                  src={avatarUrl(notif.sender?.avatar) || "https://api.dicebear.com/7.x/avataaars/svg?seed=user"} 
+                                  alt={notif.sender?.fullname || 'Sender avatar'}
+                                  style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }}
+                                  width="40"
+                                  height="40"
+                                  loading="lazy"
+                                  decoding="async"
+                                />
                                 <div style={{ flex: 1, overflow: 'hidden' }}>
                                     <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: '1.2' }}><b>{notif.sender?.fullname}</b> {notif.message}</p>
                                     <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{new Date(notif.createdAt).toLocaleDateString()}</span>
                                 </div>
-                                {notif.video?.thumbnail && <img src={notif.video.thumbnail} style={{ width: '60px', height: '40px', borderRadius: '4px', objectFit: 'cover' }} />}
+                                {notif.video?.thumbnail && <img 
+                                  src={ensureHttps(notif.video.thumbnail)} 
+                                  alt="Video thumbnail"
+                                  style={{ width: '60px', height: '40px', borderRadius: '4px', objectFit: 'cover' }}
+                                  width="60"
+                                  height="40"
+                                  loading="lazy"
+                                  decoding="async"
+                                />}
                             </div>
                         ))
                     }
@@ -139,10 +158,13 @@ const Navbar = ({ setSidebarOpen, sidebarOpen }) => {
             <motion.img 
               onClick={() => navigate(`/c/${user.username}`)}
               whileHover={{ scale: 1.1, zIndex: 10, boxShadow: "0px 0px 15px rgba(255, 0, 0, 0.5)" }}
-              src={user.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"} 
-              alt="User" 
+              src={avatarUrl(user.avatar) || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"} 
+              alt={user.fullname || "User avatar"} 
               className="user-profile"
               style={{ cursor: 'pointer' }}
+              width="40"
+              height="40"
+              decoding="async"
             />
           </div>
         ) : (

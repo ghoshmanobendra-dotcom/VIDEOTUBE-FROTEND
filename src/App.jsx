@@ -32,7 +32,7 @@ function App() {
       <Navbar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
       <div className="main-content">
         <Sidebar isOpen={sidebarOpen} />
-        <div className={`page-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        <main className={`page-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -48,7 +48,7 @@ function App() {
             <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
             <Route path="/liked" element={<ProtectedRoute><LikedVideos /></ProtectedRoute>} />
           </Routes>
-        </div>
+        </main>
       </div>
     </div>
   );

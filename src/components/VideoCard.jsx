@@ -3,12 +3,15 @@ import { MoreVertical, Flag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../api/axios';
+import { thumbnailUrl, avatarUrl } from '../utils/cloudinary';
 
 const VideoCard = ({ video }) => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const thumbnailUrl = video.thumbnail || video.thumbnailUrl || "https://picsum.photos/600/340";
-  const channelAvatar = video.owner?.avatar || video.channelAvatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=user";
+  const rawThumbnail = video.thumbnail || video.thumbnailUrl || "https://picsum.photos/600/340";
+  const rawAvatar = video.owner?.avatar || video.channelAvatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=user";
+  const optimizedThumbnail = thumbnailUrl(rawThumbnail);
+  const optimizedAvatar = avatarUrl(rawAvatar);
   const channelName = video.owner?.fullname || video.channelName || "Unknown Channel";
   
   let formattedDuration = video.duration || "0:00";
@@ -52,23 +55,31 @@ const VideoCard = ({ video }) => {
     >
       <div className="thumbnail-container">
         <motion.img 
-          src={thumbnailUrl} 
+          src={optimizedThumbnail} 
           alt={video.title} 
           className="thumbnail"
+          width="720"
+          height="405"
+          loading="lazy"
+          decoding="async"
         />
         <span className="duration">{formattedDuration}</span>
       </div>
       
       <div className="video-info">
         <img 
-           src={channelAvatar} 
+           src={optimizedAvatar} 
            alt={channelName} 
            className="channel-avatar" 
            onClick={(e) => { e.stopPropagation(); if(video.owner?.username) navigate(`/c/${video.owner.username}`); }}
            style={{ cursor: 'pointer' }}
+           width="40"
+           height="40"
+           loading="lazy"
+           decoding="async"
         />
         <div className="video-details">
-          <h4>{video.title}</h4>
+          <p className="video-title">{video.title}</p>
           <p 
             className="channel-name" 
             onClick={(e) => { e.stopPropagation(); if(video.owner?.username) navigate(`/c/${video.owner.username}`); }}

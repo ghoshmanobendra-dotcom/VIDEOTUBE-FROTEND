@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import { Users } from 'lucide-react';
+import { avatarUrl } from '../utils/cloudinary';
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -78,7 +79,15 @@ const SearchResults = () => {
                              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', borderRadius: '12px', border: '1px solid var(--border-color)', cursor: 'pointer' }}
                           >
                              <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }} onClick={() => navigate(`/c/${channel.username}`)}>
-                                 <img src={channel.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=u"} alt={channel.fullname} style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
+                                 <img 
+                                   src={avatarUrl(channel.avatar) || "https://api.dicebear.com/7.x/avataaars/svg?seed=u"} 
+                                   alt={channel.fullname} 
+                                   style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }}
+                                   width="80"
+                                   height="80"
+                                   loading="lazy"
+                                   decoding="async"
+                                 />
                                  <div>
                                      <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{channel.fullname}</h3>
                                      <p style={{ margin: '5px 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>@{channel.username} • {channel.subscribersCount} subscribers</p>

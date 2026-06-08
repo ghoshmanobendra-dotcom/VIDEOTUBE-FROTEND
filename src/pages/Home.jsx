@@ -4,6 +4,7 @@ import VideoCard from '../components/VideoCard';
 import { Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 import api from '../api/axios';
+import { avatarUrl, ensureHttps } from '../utils/cloudinary';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const Home = () => {
       <div 
         className="hero-banner"
         style={{
-          backgroundImage: `linear-gradient(to right, rgba(11, 13, 20, 0.9) 0%, rgba(11, 13, 20, 0.2) 100%), url(${trendingVideo.thumbnail || trendingVideo.thumbnailUrl || 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&q=80&w=1200'})`
+          backgroundImage: `linear-gradient(to right, rgba(11, 13, 20, 0.9) 0%, rgba(11, 13, 20, 0.2) 100%), url(${ensureHttps(trendingVideo.thumbnail || trendingVideo.thumbnailUrl || 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&q=80&w=1200')})`
         }}
       >
         <div className="hero-banner-content">
@@ -67,8 +68,13 @@ const Home = () => {
                   onClick={(e) => { e.stopPropagation(); if (trendingVideo.owner?.username) navigate(`/c/${trendingVideo.owner.username}`); }}
                 >
                     <img 
-                      src={trendingVideo.owner?.avatar || trendingVideo.channelAvatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=user"} 
+                      src={avatarUrl(trendingVideo.owner?.avatar || trendingVideo.channelAvatar) || "https://api.dicebear.com/7.x/avataaars/svg?seed=user"} 
                       alt={trendingVideo.owner?.fullname || trendingVideo.channelName || "Channel Avatar"}
+                      width="48"
+                      height="48"
+                      loading="eager"
+                      fetchpriority="high"
+                      decoding="async"
                     />
                     <div className="hero-owner-info">
                        <span className="hero-owner-name">
