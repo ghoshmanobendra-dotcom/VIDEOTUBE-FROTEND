@@ -1,10 +1,13 @@
 User-agent: *
 Allow: /
+# Auth pages — no SEO value, stop crawl budget waste
+Disallow: /login
+Disallow: /register
+# Protected / personal pages
 Disallow: /settings
 Disallow: /upload
 Disallow: /history
 Disallow: /liked
 Disallow: /subscriptions
 
-# Change this to your exact Vercel URL
 Sitemap: https://videotube-frotend.vercel.app/sitemap.xml

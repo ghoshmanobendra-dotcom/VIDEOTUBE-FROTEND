@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Video } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -6,6 +6,17 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 
 const Login = () => {
+  // Prevent Googlebot from ever indexing the login page.
+  // robots.txt already disallows it, but this is a belt-and-suspenders
+  // guarantee in case the page is reached via a direct link.
+  useEffect(() => {
+    const meta = document.createElement('meta');
+    meta.name = 'robots';
+    meta.content = 'noindex, nofollow';
+    meta.setAttribute('data-page', 'login');
+    document.head.appendChild(meta);
+    return () => { document.head.removeChild(meta); };
+  }, []);
   const [identifier, setIdentifier] = useState(''); // email or username
   const [password, setPassword] = useState('');
   

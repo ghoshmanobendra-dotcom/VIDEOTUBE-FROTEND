@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Video } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,6 +6,15 @@ import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
+  // Prevent Googlebot from ever indexing the register page.
+  useEffect(() => {
+    const meta = document.createElement('meta');
+    meta.name = 'robots';
+    meta.content = 'noindex, nofollow';
+    meta.setAttribute('data-page', 'register');
+    document.head.appendChild(meta);
+    return () => { document.head.removeChild(meta); };
+  }, []);
   const { setUser } = useAuth();
   const [formData, setFormData] = useState({
     fullname: '', username: '', email: '', password: ''

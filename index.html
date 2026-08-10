@@ -66,13 +66,97 @@
   </head>
   <body>
     <div id="root">
-      <div style="padding: 2rem; font-family: system-ui, -apple-system, sans-serif; color: #fff; background: #0b0d14; min-height: 100vh;">
-        <h1>VIDEOTUBE</h1>
-        <h2>Your Next Generation Video Platform</h2>
-        <p>Welcome to Videotube - the best platform to discover, watch, and share your favorite videos online. Join our community today to explore trending videos in Gaming, Music, News, Podcasts, AI, and more.</p>
-        <p>Loading application... Please wait while we fetch the latest trending videos for you.</p>
+      <!--
+        STATIC FALLBACK — shown before React hydrates (or if JS fails / backend cold-starts).
+        This content is what Googlebot indexes. Keep it meaningful and content-rich.
+        React will replace this once it mounts; users never see it for more than ~200ms.
+      -->
+      <div style="font-family:'Outfit',system-ui,-apple-system,sans-serif;background:#0b0d14;color:#e8eaf0;min-height:100vh;margin:0;">
+
+        <!-- Header -->
+        <header style="display:flex;align-items:center;gap:12px;padding:16px 28px;background:#13151f;border-bottom:1px solid #1e2235;">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="16" fill="#ff0000"/>
+            <polygon points="12,10 24,16 12,22" fill="#fff"/>
+          </svg>
+          <span style="font-size:1.3rem;font-weight:800;letter-spacing:1px;color:#fff;">VIDEOTUBE</span>
+          <nav style="margin-left:auto;display:flex;gap:20px;">
+            <a href="/search" style="color:#b0b3c1;text-decoration:none;font-size:0.9rem;">Search</a>
+            <a href="/login" style="color:#b0b3c1;text-decoration:none;font-size:0.9rem;">Sign In</a>
+            <a href="/register" style="color:#ff0000;text-decoration:none;font-size:0.9rem;font-weight:600;">Join Free</a>
+          </nav>
+        </header>
+
+        <!-- Hero -->
+        <section style="padding:48px 28px 32px;max-width:800px;">
+          <h1 style="font-size:clamp(1.8rem,5vw,3rem);font-weight:800;margin:0 0 16px;line-height:1.15;color:#fff;">
+            Discover &amp; Share Videos<br/>You Actually Love
+          </h1>
+          <p style="font-size:1.1rem;color:#9095a8;line-height:1.7;margin:0 0 28px;max-width:620px;">
+            VideoTube is a next-generation video platform for creators and viewers alike.
+            Browse trending Gaming clips, Music videos, Tech &amp; AI showcases, Podcasts, News highlights,
+            and more — all in one place. Upload your own content, subscribe to channels,
+            and build your personal video library.
+          </p>
+          <a href="/register" style="display:inline-block;background:#ff0000;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:1rem;margin-right:12px;">
+            Get Started Free
+          </a>
+          <a href="/search" style="display:inline-block;background:#1e2235;color:#e8eaf0;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:600;font-size:1rem;">
+            Browse Videos
+          </a>
+        </section>
+
+        <!-- Categories -->
+        <section style="padding:0 28px 32px;" aria-label="Video Categories">
+          <h2 style="font-size:1rem;font-weight:700;color:#6b7080;text-transform:uppercase;letter-spacing:2px;margin:0 0 14px;">Browse by Category</h2>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;">
+            <a href="/search?q=gaming"     style="background:#1e2235;color:#e8eaf0;padding:8px 18px;border-radius:50px;text-decoration:none;font-size:0.9rem;font-weight:500;">🎮 Gaming</a>
+            <a href="/search?q=music"      style="background:#1e2235;color:#e8eaf0;padding:8px 18px;border-radius:50px;text-decoration:none;font-size:0.9rem;font-weight:500;">🎵 Music</a>
+            <a href="/search?q=live"       style="background:#1e2235;color:#e8eaf0;padding:8px 18px;border-radius:50px;text-decoration:none;font-size:0.9rem;font-weight:500;">🔴 Live</a>
+            <a href="/search?q=ai"         style="background:#1e2235;color:#e8eaf0;padding:8px 18px;border-radius:50px;text-decoration:none;font-size:0.9rem;font-weight:500;">🤖 AI &amp; Tech</a>
+            <a href="/search?q=podcasts"   style="background:#1e2235;color:#e8eaf0;padding:8px 18px;border-radius:50px;text-decoration:none;font-size:0.9rem;font-weight:500;">🎙️ Podcasts</a>
+            <a href="/search?q=news"       style="background:#1e2235;color:#e8eaf0;padding:8px 18px;border-radius:50px;text-decoration:none;font-size:0.9rem;font-weight:500;">📰 News</a>
+            <a href="/search?q=projects"   style="background:#1e2235;color:#e8eaf0;padding:8px 18px;border-radius:50px;text-decoration:none;font-size:0.9rem;font-weight:500;">🛠️ Projects</a>
+            <a href="/search?q=daily+info" style="background:#1e2235;color:#e8eaf0;padding:8px 18px;border-radius:50px;text-decoration:none;font-size:0.9rem;font-weight:500;">💡 Daily Info</a>
+          </div>
+        </section>
+
+        <!-- Features -->
+        <section style="padding:0 28px 48px;" aria-label="Platform Features">
+          <h2 style="font-size:1.3rem;font-weight:700;color:#fff;margin:0 0 20px;">Why VideoTube?</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:900px;">
+            <div style="background:#13151f;border:1px solid #1e2235;border-radius:12px;padding:20px;">
+              <div style="font-size:1.8rem;margin-bottom:10px;">🎬</div>
+              <h3 style="font-size:1rem;font-weight:700;color:#fff;margin:0 0 6px;">Upload &amp; Share</h3>
+              <p style="font-size:0.85rem;color:#9095a8;margin:0;line-height:1.6;">Upload your videos in HD, set categories, thumbnails, and share with the world instantly.</p>
+            </div>
+            <div style="background:#13151f;border:1px solid #1e2235;border-radius:12px;padding:20px;">
+              <div style="font-size:1.8rem;margin-bottom:10px;">📺</div>
+              <h3 style="font-size:1rem;font-weight:700;color:#fff;margin:0 0 6px;">Subscribe to Channels</h3>
+              <p style="font-size:0.85rem;color:#9095a8;margin:0;line-height:1.6;">Follow your favourite creators and get their latest videos delivered to your feed.</p>
+            </div>
+            <div style="background:#13151f;border:1px solid #1e2235;border-radius:12px;padding:20px;">
+              <div style="font-size:1.8rem;margin-bottom:10px;">❤️</div>
+              <h3 style="font-size:1rem;font-weight:700;color:#fff;margin:0 0 6px;">Like &amp; History</h3>
+              <p style="font-size:0.85rem;color:#9095a8;margin:0;line-height:1.6;">Save liked videos and revisit your watch history anytime from any device.</p>
+            </div>
+            <div style="background:#13151f;border:1px solid #1e2235;border-radius:12px;padding:20px;">
+              <div style="font-size:1.8rem;margin-bottom:10px;">🔍</div>
+              <h3 style="font-size:1rem;font-weight:700;color:#fff;margin:0 0 6px;">Powerful Search</h3>
+              <p style="font-size:0.85rem;color:#9095a8;margin:0;line-height:1.6;">Find exactly what you're looking for across all categories with fast, full-text search.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Loading indicator (users see this briefly while React boots) -->
+        <div style="text-align:center;padding:20px;color:#4a5068;font-size:0.85rem;" aria-live="polite">
+          Loading videos…
+        </div>
+
         <noscript>
-          <p>We're sorry, but Videotube requires JavaScript to be enabled. Please enable JavaScript to watch videos, upload content, and interact with the community.</p>
+          <div style="margin:20px 28px;padding:16px;background:#1e2235;border-radius:8px;color:#ffb700;">
+            <strong>JavaScript is required.</strong> Please enable JavaScript in your browser to watch videos, upload content, and interact with the VideoTube community.
+          </div>
         </noscript>
       </div>
     </div>

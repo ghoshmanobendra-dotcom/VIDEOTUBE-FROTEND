@@ -43,24 +43,42 @@ const Home = () => {
     // Video fetch is completely independent of auth — no waterfall.
     // The skeleton grid shows immediately; content swaps in once the
     // /videos response arrives.
+    //
+    // IMPORTANT: We set a 5-second AbortController timeout.
+    // The backend (Render free tier) cold-starts in 30-50s. Without a timeout,
+    // Googlebot's WRS sees only the skeleton (empty divs) indefinitely and
+    // marks the page as a Soft 404. With this timeout, the fetch either
+    // resolves with real content or aborts and renders the "no videos" text
+    // state — both give Googlebot meaningful content to index.
     let cancelled = false;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     const fetchVideos = async () => {
       setLoading(true);
       try {
         const url = selectedCategory === "All"
           ? '/videos'
           : `/videos?category=${encodeURIComponent(selectedCategory)}`;
-        const response = await api.get(url);
+        const response = await api.get(url, { signal: controller.signal });
         if (!cancelled) setVideos(response.data.data);
       } catch (error) {
-        if (!cancelled) console.warn("Failed to fetch videos", error);
+        // AbortError is expected on slow cold-starts — not a real error.
+        if (!cancelled && error.name !== 'AbortError' && error.name !== 'CanceledError') {
+          console.warn("Failed to fetch videos", error);
+        }
       } finally {
+        clearTimeout(timeoutId);
         if (!cancelled) setLoading(false);
       }
     };
 
     fetchVideos();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      controller.abort();
+      clearTimeout(timeoutId);
+    };
   }, [selectedCategory]);
 
   const containerVariants = {

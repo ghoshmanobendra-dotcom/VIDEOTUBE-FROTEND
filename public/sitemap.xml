@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage — the only page worth indexing right now -->
   <url>
-    <!-- Change this to your exact Vercel URL -->
     <loc>https://videotube-frotend.vercel.app/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+  <!-- Search page — public, useful for Google to understand what's searchable -->
   <url>
-    <loc>https://videotube-frotend.vercel.app/login</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://videotube-frotend.vercel.app/register</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://videotube-frotend.vercel.app/search</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>
